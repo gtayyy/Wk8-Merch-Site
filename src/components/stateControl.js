@@ -1,6 +1,8 @@
 import React from "react";
 import NewInventoryForm from "./NewInventoryForm";
 import MasterStock from "./MasterStockList";
+import { v4 } from 'uuid';
+// import UpdateInventoryForm from "./UpdateInventoryForm";
 
 class InventoryControl extends React.Component {
 
@@ -13,19 +15,19 @@ class InventoryControl extends React.Component {
           name: 'Vinyl LP',
           price: '$30',
           leftInStock: '20',
-          id: '1'
+          id: v4()
         },
         {
           name: 'T-shirt',
           price: '$15',
           leftInStock: '25',
-          id: '2'
+          id: v4()
         },
         {
           name: 'Hoodie',
           price: '$45',
           leftInStock: '10',
-          id: '3'
+          id: v4()
         }
       ]
     };
@@ -44,10 +46,10 @@ class InventoryControl extends React.Component {
     let currentlyVisibleState = null;
     let buttonText = null;
     if (this.state.formVisibleOnPage) {
-      currentlyVisibleState = <NewInventoryForm onNewInventoryCreation={this.handleAddingNewInventoryToList} />; //passing handle() down to NewtickForm as prop called onNewTicketCreation
+      currentlyVisibleState = <NewInventoryForm onNewInventoryCreation={this.handleAddingNewInventoryToList} />;
       buttonText = "Return to Storefront";
     } else {
-      currentlyVisibleState = <MasterStock itemsInStock={this.state.mainInventoryList}/>; //passing down prop to TicketList child
+      currentlyVisibleState = <MasterStock itemsInStock={this.state.mainInventoryList}/>;
       buttonText = "Add New Inventory";
       
     }
@@ -62,3 +64,4 @@ class InventoryControl extends React.Component {
 }
 
 export default InventoryControl;
+

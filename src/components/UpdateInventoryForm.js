@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 } from 'uuid';
 
-function NewInventoryForm(props) {
-  function handleNewInventoryFormSubmission(e) {
+function UpdateInventoryForm(props) {
+  function handleUpdateInventoryFormSubmission(e) {
     e.preventDefault();
-    props.onNewInventoryCreation({ 
+    props.onUpdateInventoryCreation({
       name: e.target.name.value,
       price: e.target.price.value,
       leftInStock: e.target.leftInStock.value,
@@ -14,27 +14,27 @@ function NewInventoryForm(props) {
   }
   return (
     <React.Fragment>
-      <form onSubmit={handleNewInventoryFormSubmission}>
+      <form onSubmit={handleUpdateInventoryFormSubmission}>
         <input
           type='text'
           name='name'
-          placeholder='New Item Name' />
+          placeholder='Update Item Name' />
         <input
           type='text'
           name='price'
-          placeholder='Price' />
+          placeholder='Update Price' />
         <input
           type='text'
           name="leftInStock"
-          placeholder='Starting Inventory' />
-        <button type='submit'>Add to Inventory</button>
+          placeholder='Update Inventory' />
+        <button type='submit'>Update Item</button>
       </form>
     </React.Fragment>
   );
 }
 
-NewInventoryForm.propTypes = {
-  onNewInventoryCreation: PropTypes.func
+UpdateInventoryForm.propTypes = {
+  onUpdateInventoryCreation: PropTypes.func
 };
 
-export default NewInventoryForm;
+export default UpdateInventoryForm;
