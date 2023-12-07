@@ -12,6 +12,7 @@ function MasterStock(props){
           leftInStock={item.leftInStock}
           id={item.id}
           update={props.handleUpdate}
+          addToCart={props.addToCart}
           key={index}/>
       )}
     </React.Fragment>

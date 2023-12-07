@@ -1,80 +1,15 @@
-// import React from "react";
-// import NewInventoryForm from "./NewInventoryForm";
-// import MasterStock from "./MasterStockList";
-// import { v4 } from 'uuid';
-// // import UpdateInventoryForm from "./UpdateInventoryForm";
-
-// class InventoryControl extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       formVisibleOnPage: false, 
-//       mainInventoryList: [
-//         {
-//           name: 'Vinyl LP',
-//           price: '$30',
-//           leftInStock: '20',
-//           id: v4()
-//         },
-//         {
-//           name: 'T-shirt',
-//           price: '$15',
-//           leftInStock: '25',
-//           id: v4()
-//         },
-//         {
-//           name: 'Hoodie',
-//           price: '$45',
-//           leftInStock: '10',
-//           id: v4()
-//         }
-//       ]
-//     };
-//   }
-//   handleClick = () => {
-//     this.setState(prevState =>({formVisibleOnPage: !prevState.formVisibleOnPage}));
-//   }
-//   handleAddingNewInventoryToList = (newInventory) => {
-//     const newMainInventoryList = this.state.mainInventoryList.concat(newInventory);
-//     this.setState({
-//       mainInventoryList: newMainInventoryList, 
-//       formVisibleOnPage: false
-//     });
-//   } 
-//   render(){
-//     let currentlyVisibleState = null;
-//     let buttonText = null;
-//     if (this.state.formVisibleOnPage) {
-//       currentlyVisibleState = <NewInventoryForm onNewInventoryCreation={this.handleAddingNewInventoryToList} />;
-//       buttonText = "Return to Storefront";
-//     } else {
-//       currentlyVisibleState = <MasterStock itemsInStock={this.state.mainInventoryList}/>;
-//       buttonText = "Add New Inventory";
-      
-//     }
-//     return (
-//       <React.Fragment>
-//         {currentlyVisibleState}
-//         <button onClick={this.handleClick}>{buttonText}</button>
-//       </React.Fragment>
-//     );
-//   }
-
-// }
-
-// export default InventoryControl;
-
 import React from "react";
 import NewInventoryForm from "./NewInventoryForm";
 import MasterStock from "./MasterStockList";
 import { v4 } from 'uuid';
 import UpdateInventoryForm from "./UpdateInventoryForm";
+import Cart from "./Cart";
 
 class InventoryControl extends React.Component {
 
   constructor(props) {
     super(props);
+    this.addToCart = this.addToCart.bind(this);
     this.state = {
       addFormVisibleOnPage: false, 
       updateFormVisibleOnPage: false,
@@ -99,7 +34,8 @@ class InventoryControl extends React.Component {
           leftInStock: '10',
           id: v4()
         }
-      ]
+      ],
+      cartItems: []
     };
   }
 
@@ -131,7 +67,13 @@ class InventoryControl extends React.Component {
       mainInventoryList: newMainInventoryList, 
       addFormVisibleOnPage: false
     });
-  } 
+  };
+
+  addToCart = (itemName, itemPrice, itemId) => {
+    const newItem = { name: itemName, price: itemPrice, id: itemId };
+    this.setState(prevState => ({ cartItems: [...prevState.cartItems, newItem] }));
+  };
+
   render(){
     let currentlyVisibleState = null;
     let buttonText = null;
@@ -142,12 +84,12 @@ class InventoryControl extends React.Component {
     } else if (this.state.updateFormVisibleOnPage) {
       currentlyVisibleState = <UpdateInventoryForm onUpdateInventoryCreation={this.handleAddingNewInventoryToList} />;
       buttonText = "Return to Storefront";
-    // } else if (this.state.cartVisibleOnPage) {
-    //   currentlyVisibleState = <Cart />;
-    //   buttonText = "Return to Storefront";
-    //   cartButtonText = "Hide Cart"
+    } else if (this.state.cartVisibleOnPage) {
+      currentlyVisibleState = <Cart cartItems={this.state.cartItems} />;
+      buttonText = "";
+      cartButtonText = "Return to Storefront"
     } else {
-      currentlyVisibleState = <MasterStock handleUpdate={this.handleUpdateClick} itemsInStock={this.state.mainInventoryList}/>;
+      currentlyVisibleState = <MasterStock addToCart={this.addToCart} handleUpdate={this.handleUpdateClick} itemsInStock={this.state.mainInventoryList}/>;
       buttonText = "Add New Inventory";
       cartButtonText = "View Cart"
       
