@@ -55,9 +55,11 @@ class InventoryControl extends React.Component {
   }
 
   handleUpdateClick = (id) => {
-    this.setState(prevState =>({updateFormVisibleOnPage: !prevState.UpdateFormVisibleOnPage}));
-    this.setState ({selectedId: id});
-  }
+    this.setState(prevState => ({
+      updateFormVisibleOnPage: !prevState.updateFormVisibleOnPage,
+      selectedId: id
+    }));
+  };
 
 
 
@@ -69,9 +71,35 @@ class InventoryControl extends React.Component {
     });
   };
 
+  handleUpdatingInventory = (updatedInventory) => {
+    const updatedList = this.state.mainInventoryList.map(item => {
+      if (item.id === this.state.selectedId) {
+        return {
+          ...item,
+          name: updatedInventory.name,
+          price: updatedInventory.price,
+          leftInStock: updatedInventory.leftInStock
+        };
+      }
+      return item;
+    });
+  
+    this.setState({
+      mainInventoryList: updatedList,
+      updateFormVisibleOnPage: false
+    });
+  };
+
   addToCart = (itemName, itemPrice, itemId) => {
     const newItem = { name: itemName, price: itemPrice, id: itemId };
-    this.setState(prevState => ({ cartItems: [...prevState.cartItems, newItem] }));
+    this.setState(prevState => ({
+      cartItems: [...prevState.cartItems, newItem]
+    }));
+  };
+
+  removeFromCart = (itemId) => {
+    const updatedCart = this.state.cartItems.filter((item) => item.id !== itemId);
+    this.setState({ cartItems: updatedCart });
   };
 
   render(){
@@ -82,14 +110,21 @@ class InventoryControl extends React.Component {
       currentlyVisibleState = <NewInventoryForm onNewInventoryCreation={this.handleAddingNewInventoryToList} />;
       buttonText = "Return to Storefront";
     } else if (this.state.updateFormVisibleOnPage) {
-      currentlyVisibleState = <UpdateInventoryForm onUpdateInventoryCreation={this.handleAddingNewInventoryToList} />;
+      currentlyVisibleState = <UpdateInventoryForm onUpdateInventoryCreation={this.handleUpdatingInventory} />;
       buttonText = "Return to Storefront";
     } else if (this.state.cartVisibleOnPage) {
-      currentlyVisibleState = <Cart cartItems={this.state.cartItems} />;
+      currentlyVisibleState = <Cart
+      cartItems={this.state.cartItems}
+      removeFromCart={this.removeFromCart}
+    />;
       buttonText = "";
       cartButtonText = "Return to Storefront"
     } else {
-      currentlyVisibleState = <MasterStock addToCart={this.addToCart} handleUpdate={this.handleUpdateClick} itemsInStock={this.state.mainInventoryList}/>;
+      currentlyVisibleState =   <MasterStock
+      addToCart={this.addToCart}
+      handleUpdate={this.handleUpdateClick}
+      itemsInStock={this.state.mainInventoryList}
+    />;
       buttonText = "Add New Inventory";
       cartButtonText = "View Cart"
       

@@ -7,7 +7,7 @@ function StockItem({ name, price, leftInStock, update, id, addToCart }) {
   const handleCartClick = () => {
     if (stockRemaining > 0) {
       setStockRemaining(s => s - 1);
-      addToCart(name, price, id);
+      addToCart(name, price, id); // Ensure addToCart is called correctly
       console.log(`Cart button clicked for item ${id}`);
     } else {
       console.log(`Item ${id} is out of stock.`);
