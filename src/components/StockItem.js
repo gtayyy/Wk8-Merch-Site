@@ -23,6 +23,8 @@ function StockItem({ name, price, leftInStock, update, id, addToCart }) {
     <div>
       <p>{name} - {price}</p>
       <p>Stock Remaining: {stockRemaining}</p>
+      <label>Qty:</label>
+      <input type="number"></input>
       <button onClick={handleCartClick}>Add to Cart</button>
       <button onClick={handleUpdateClick}>Update</button>
       <hr />
