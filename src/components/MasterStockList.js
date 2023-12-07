@@ -7,7 +7,9 @@ function MasterStock(props){
     <React.Fragment>
       <hr/>
       {props.itemsInStock.map((item, index) =>
-        <StockItem name={item.name}
+        <StockItem 
+          imgSrc={item.imgSrc}
+          name={item.name}
           price={item.price}
           leftInStock={item.leftInStock}
           id={item.id}

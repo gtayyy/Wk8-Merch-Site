@@ -11,27 +11,30 @@ class InventoryControl extends React.Component {
     super(props);
     this.addToCart = this.addToCart.bind(this);
     this.state = {
-      addFormVisibleOnPage: false, 
+      addFormVisibleOnPage: false,
       updateFormVisibleOnPage: false,
       cartVisibleOnPage: false,
       selectedId: null,
       mainInventoryList: [
         {
-          name: 'Vinyl LP',
+          name: 'My Bloody Valentine- "Loveless" Vinyl LP',
           price: '$30',
           leftInStock: '20',
+          imgSrc: "img/vinyl.jpeg",
           id: v4()
         },
         {
-          name: 'T-shirt',
+          name: 'Sonic Youth "Washing Machine" T-shirt',
           price: '$15',
           leftInStock: '25',
+          imgSrc: "img/tshirt.jpeg",
           id: v4()
         },
         {
-          name: 'Hoodie',
+          name: 'Pavement Tour Hoodie',
           price: '$45',
           leftInStock: '10',
+          imgSrc: "img/hoodie.png",
           id: v4()
         }
       ],
@@ -39,19 +42,18 @@ class InventoryControl extends React.Component {
     };
   }
 
-//THIS FUNCTION IS WHAT YOU'RE WORKING ON
+  //THIS FUNCTION IS WHAT YOU'RE WORKING ON
 
   handleAddClick = () => {
-    console.log(this.state.updateFormVisibleOnPage)
     if (this.state.updateFormVisibleOnPage === false) {
-      this.setState(prevState =>({addFormVisibleOnPage: !prevState.addFormVisibleOnPage}));
+      this.setState(prevState => ({ addFormVisibleOnPage: !prevState.addFormVisibleOnPage }));
     } else {
-      this.setState(prevState =>({updateFormVisibleOnPage: !prevState.updateFormVisibleOnPage}));
+      this.setState(prevState => ({ updateFormVisibleOnPage: !prevState.updateFormVisibleOnPage }));
     }
   }
 
   handleCartClick = () => {
-    this.setState(prevState =>({cartVisibleOnPage: !prevState.cartVisibleOnPage}));
+    this.setState(prevState => ({ cartVisibleOnPage: !prevState.cartVisibleOnPage }));
   }
 
   handleUpdateClick = (id) => {
@@ -66,7 +68,7 @@ class InventoryControl extends React.Component {
   handleAddingNewInventoryToList = (newInventory) => {
     const newMainInventoryList = this.state.mainInventoryList.concat(newInventory);
     this.setState({
-      mainInventoryList: newMainInventoryList, 
+      mainInventoryList: newMainInventoryList,
       addFormVisibleOnPage: false
     });
   };
@@ -83,15 +85,15 @@ class InventoryControl extends React.Component {
       }
       return item;
     });
-  
+
     this.setState({
       mainInventoryList: updatedList,
       updateFormVisibleOnPage: false
     });
   };
 
-  addToCart = (itemName, itemPrice, itemId) => {
-    const newItem = { name: itemName, price: itemPrice, id: itemId };
+  addToCart = (itemName, itemPrice, itemImgSrc) => {
+    const newItem = { name: itemName, price: itemPrice, id: v4(), imgSrc: itemImgSrc };
     this.setState(prevState => ({
       cartItems: [...prevState.cartItems, newItem]
     }));
@@ -99,10 +101,11 @@ class InventoryControl extends React.Component {
 
   removeFromCart = (itemId) => {
     const updatedCart = this.state.cartItems.filter((item) => item.id !== itemId);
+    console.log(updatedCart);
     this.setState({ cartItems: updatedCart });
   };
 
-  render(){
+  render() {
     let currentlyVisibleState = null;
     let buttonText = null;
     let cartButtonText = null;
@@ -113,27 +116,35 @@ class InventoryControl extends React.Component {
       currentlyVisibleState = <UpdateInventoryForm onUpdateInventoryCreation={this.handleUpdatingInventory} />;
       buttonText = "Return to Storefront";
     } else if (this.state.cartVisibleOnPage) {
-      currentlyVisibleState = <Cart
-      cartItems={this.state.cartItems}
-      removeFromCart={this.removeFromCart}
-    />;
-      buttonText = "";
       cartButtonText = "Return to Storefront"
+      currentlyVisibleState = (
+        <>
+          <Cart
+            cartItems={this.state.cartItems}
+            removeFromCart={this.removeFromCart}
+          />
+          <button button onClick={this.handleCartClick} > {cartButtonText}</button>
+        </>)
     } else {
-      currentlyVisibleState =   <MasterStock
-      addToCart={this.addToCart}
-      handleUpdate={this.handleUpdateClick}
-      itemsInStock={this.state.mainInventoryList}
-    />;
       buttonText = "Add New Inventory";
       cartButtonText = "View Cart"
-      
+      currentlyVisibleState = (
+        <>
+          <MasterStock
+            addToCart={this.addToCart}
+            handleUpdate={this.handleUpdateClick}
+            itemsInStock={this.state.mainInventoryList}
+          />
+          <button onClick={this.handleAddClick}>{buttonText}</button>
+          <button onClick={this.handleCartClick}>{cartButtonText}</button>
+        </>)
+
+
     }
     return (
       <React.Fragment>
         {currentlyVisibleState}
-        <button onClick={this.handleAddClick}>{buttonText}</button>
-        <button onClick={this.handleCartClick}>{cartButtonText}</button>
+
       </React.Fragment>
     );
   }

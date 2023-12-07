@@ -1,0 +1,14 @@
+body {
+  background-color: #61dafb;
+}
+
+img {
+  width: 200px;
+}
+
+#stockItem {
+  background-color: bisque;
+  padding: 20px;
+  margin: 20px;
+  columns: 2;
+}

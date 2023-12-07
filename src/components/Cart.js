@@ -7,6 +7,7 @@ function Cart({ cartItems, removeFromCart }) {
       <ul>
         {cartItems.map((item) => (
           <li key={item.id}>
+            <img src={item.imgSrc} alt={item.name} />
             {item.name} - {item.price}
             <button onClick={() => removeFromCart(item.id)}>Remove</button>
           </li>
