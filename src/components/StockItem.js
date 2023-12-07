@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useState } from 'react';
 
-function StockItem({ name, price, leftInStock, id }) {
+function StockItem({ name, price, leftInStock, update, id }) {
   const [stockRemaining, setStockRemaining] = useState(leftInStock);
   const handleCartClick = () => {
     setStockRemaining(s => s - 1)
@@ -13,6 +13,8 @@ function StockItem({ name, price, leftInStock, id }) {
 
   const handleUpdateClick = () => {
     console.log(`Update button clicked for item ${id}`);
+    update(id)
+
   }
 
   return (
