@@ -21,10 +21,6 @@ function MasterStock(props){
   );
 }
 
-//   this.setState({mainTicketList: newMainTicketList,
-//                 formVisibleOnPage: false });
-// }
-
 MasterStock.propTypes = {
   masterStock: PropTypes.array
 };

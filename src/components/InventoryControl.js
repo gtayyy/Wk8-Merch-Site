@@ -123,7 +123,7 @@ class InventoryControl extends React.Component {
             cartItems={this.state.cartItems}
             removeFromCart={this.removeFromCart}
           />
-          <button button onClick={this.handleCartClick} > {cartButtonText}</button>
+          <button onClick={this.handleCartClick} > {cartButtonText}</button>
         </>)
     } else {
       buttonText = "Add New Inventory";
@@ -135,8 +135,10 @@ class InventoryControl extends React.Component {
             handleUpdate={this.handleUpdateClick}
             itemsInStock={this.state.mainInventoryList}
           />
-          <button onClick={this.handleAddClick}>{buttonText}</button>
-          <button onClick={this.handleCartClick}>{cartButtonText}</button>
+          <div className="centerButtons">
+            <button onClick={this.handleAddClick}>{buttonText}</button>
+            <button onClick={this.handleCartClick}>{cartButtonText}</button>
+          </div>
         </>)
 
 

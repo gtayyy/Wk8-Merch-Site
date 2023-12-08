@@ -1,5 +1,6 @@
 body {
   background-color: #61dafb;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 img {
@@ -11,4 +12,19 @@ img {
   padding: 20px;
   margin: 20px;
   columns: 2;
+  float: left;
+  font-size: 16px;
+}
+
+button {
+  width: 150px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.centerButtons {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+
 }
