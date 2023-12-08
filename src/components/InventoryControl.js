@@ -94,6 +94,7 @@ class InventoryControl extends React.Component {
 
   addToCart = (itemName, itemPrice, itemImgSrc) => {
     const newItem = { name: itemName, price: itemPrice, id: v4(), imgSrc: itemImgSrc };
+    console.log(newItem);
     this.setState(prevState => ({
       cartItems: [...prevState.cartItems, newItem]
     }));
