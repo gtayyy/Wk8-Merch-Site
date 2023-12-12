@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 
 function MasterStock(props){
   return (
+    // line 10? itemsInStock or mainInventoryList?
     <React.Fragment>
-      <hr/>
-      {props.itemsInStock.map((item, index) =>
+      <hr/> 
+      {Object.values(props.itemsInStock).map((item, index) =>
         <StockItem 
           imgSrc={item.imgSrc}
           name={item.name}
@@ -22,7 +23,7 @@ function MasterStock(props){
 }
 
 MasterStock.propTypes = {
-  masterStock: PropTypes.array
+  masterStock: PropTypes.object
 };
 
 export default MasterStock;

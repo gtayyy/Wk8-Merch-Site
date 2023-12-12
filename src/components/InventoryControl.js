@@ -1,44 +1,23 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import NewInventoryForm from "./NewInventoryForm";
 import MasterStock from "./MasterStockList";
-import { v4 } from 'uuid';
 import UpdateInventoryForm from "./UpdateInventoryForm";
 import Cart from "./Cart";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 
 class InventoryControl extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('props', props);
     this.addToCart = this.addToCart.bind(this);
     this.state = {
       addFormVisibleOnPage: false,
       updateFormVisibleOnPage: false,
       cartVisibleOnPage: false,
       selectedId: null,
-      mainInventoryList: [
-        {
-          name: 'My Bloody Valentine- "Loveless" Vinyl LP',
-          price: '$30',
-          leftInStock: '20',
-          imgSrc: "img/vinyl.jpeg",
-          id: v4()
-        },
-        {
-          name: 'Sonic Youth "Washing Machine" T-shirt',
-          price: '$15',
-          leftInStock: '25',
-          imgSrc: "img/tshirt.jpeg",
-          id: v4()
-        },
-        {
-          name: 'Pavement Tour Hoodie',
-          price: '$45',
-          leftInStock: '10',
-          imgSrc: "img/hoodie.png",
-          id: v4()
-        }
-      ],
-      cartItems: []
     };
   }
 
@@ -63,47 +42,62 @@ class InventoryControl extends React.Component {
     }));
   };
 
-
-
   handleAddingNewInventoryToList = (newInventory) => {
-    const newMainInventoryList = this.state.mainInventoryList.concat(newInventory);
+    const { dispatch } = this.props;
+    const { name, price, leftInStock, id } = newInventory;
+    const action = {
+      type: "ADD_UPDATE_ITEM",
+      name: name,
+      price: price,
+      leftInStock: leftInStock,
+      id: id
+    }
+    dispatch(action);
     this.setState({
-      mainInventoryList: newMainInventoryList,
       addFormVisibleOnPage: false
     });
   };
 
   handleUpdatingInventory = (updatedInventory) => {
-    const updatedList = this.state.mainInventoryList.map(item => {
-      if (item.id === this.state.selectedId) {
-        return {
-          ...item,
-          name: updatedInventory.name,
-          price: updatedInventory.price,
-          leftInStock: updatedInventory.leftInStock
-        };
-      }
-      return item;
-    });
-
+    const { dispatch } = this.props;
+    const { name, price, leftInStock, id } = updatedInventory;
+    const action = {
+      type: 'ADD_UPDATE_ITEM',
+      name: name,
+      price: price,
+      leftInStock: leftInStock,
+      id: id,
+    }
+    dispatch(action);
     this.setState({
-      mainInventoryList: updatedList,
       updateFormVisibleOnPage: false
     });
   };
 
-  addToCart = (itemName, itemPrice, itemImgSrc) => {
-    const newItem = { name: itemName, price: itemPrice, id: v4(), imgSrc: itemImgSrc };
-    console.log(newItem);
-    this.setState(prevState => ({
-      cartItems: [...prevState.cartItems, newItem]
-    }));
+  addToCart = (itemToAdd) => {
+    const { dispatch } = this.props;
+    const { id, name, price, leftInStock } = itemToAdd;
+    const action = {
+      type: 'ADD_UPDATE_ITEM',
+      name: name,
+      price: price,
+      leftInStock: leftInStock,
+      id: id,
+    }
+    dispatch(action);
+    this.setState({
+      cartVisibleOnPage: false,
+    });
   };
 
   removeFromCart = (itemId) => {
-    const updatedCart = this.state.cartItems.filter((item) => item.id !== itemId);
-    console.log(updatedCart);
-    this.setState({ cartItems: updatedCart });
+    const { dispatch } = this.props;
+    const action = {
+      type: "DELETE_ITEM",
+      id: itemId
+    }
+    dispatch(action);
+    this.setState({ cartVisibleOnPage: true });
   };
 
   render() {
@@ -134,7 +128,7 @@ class InventoryControl extends React.Component {
           <MasterStock
             addToCart={this.addToCart}
             handleUpdate={this.handleUpdateClick}
-            itemsInStock={this.state.mainInventoryList}
+            itemsInStock={this.props.mainInventoryList}
           />
           <div className="centerButtons">
             <button onClick={this.handleAddClick}>{buttonText}</button>
@@ -153,5 +147,19 @@ class InventoryControl extends React.Component {
   }
 
 }
+
+InventoryControl.propTypes = {
+  mainInventoryList: PropTypes.object,
+  cartItems: PropTypes.object,
+};
+
+const mapStateToProps = state => {
+  return {
+    mainInventoryList: state, //why set inv not showing?
+    cartItems: state //?? ok to have 2 state values?
+  }
+}
+
+InventoryControl = connect(mapStateToProps)(InventoryControl);
 
 export default InventoryControl;
